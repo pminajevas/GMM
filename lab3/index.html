@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>FlaskApp</title>
+    <script>
+      const sendImage = () => {
+        const messageContainer = document.getElementById("message-container");
+        messageContainer.textContent = "";
+
+        const image = document.getElementById("img").files[0];
+
+        if (!image) {
+          alert("Please select an image!");
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append("image", image);
+
+        fetch("/", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const messageContainer =
+              document.getElementById("message-container");
+            messageContainer.textContent = data.message;
+          });
+      };
+    </script>
+  </head>
+  <body>
+    <div style="display: flex; justify-content: center; margin-top: 30px">
+      <label for="img">Select image:</label>
+      <input type="file" id="img" name="img" accept="image/*" />
+    </div>
+    <div style="display: flex; justify-content: center; margin-top: 30px">
+      <button onclick="sendImage()">Predict</button>
+    </div>
+    <div
+      style="display: flex; justify-content: center; margin-top: 30px"
+      id="message-container"
+    ></div>
+  </body>
+</html>
